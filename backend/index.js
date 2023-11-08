@@ -11,7 +11,7 @@ connectToMongo();
 const app = express();
 
 // Set the port number for the server to listen on
-const port = 3000;
+const port = 5000;
 
 //we included this so that we can console.log(req.body) in the auth.js we also had to add a header in the thunder client which had content-type application/json and added a object that has name in the body in the thunder client this is called a middleware   
 app.use(express.json());
