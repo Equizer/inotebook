@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 
 //Create a User using: POST "/app/auth/createuser" doesn't require Auth (this means that the user doesnt need to be logged in to hit this endpoint btw Auth means authentication over here)
 router.post('/createuser', [
@@ -28,8 +29,8 @@ router.post('/createuser', [
     const securedPassword = await bcrypt.hash(req.body.password, salt);
     user = await User.create({
       name: req.body.name,
-      email: securedPassword,
-      password: req.body.password
+      email: req.body.email,
+      password: securedPassword
     })
     res.json({ message: "User registered!", user: user })
   } catch (error) {
