@@ -4,6 +4,10 @@ const { Schema } = mongoose;
 
 // Define a schema for the notes data, specifying the structure of the data and its validation rules
 const NotesSchema = {
+  user: {
+    type: mongoose.Schema.Types.ObjectId ,
+    ref: 'user'
+  },
   title: { // Define the 'title' field as a String type that is required for all documents
     type: String,
     required: true,
