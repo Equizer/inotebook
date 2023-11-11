@@ -1,5 +1,6 @@
 // Require the 'mongoose' module, which is a popular MongoDB object modeling tool for Node.js
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 // Define a schema for the notes data, specifying the structure of the data and its validation rules
 const NotesSchema = {

@@ -19,8 +19,8 @@ app.use(express.json());
 
 //Available Routes
 
-app.use('/app/auth', require('./routes/auth'));
-app.use('/app/notes', require('./routes/notes'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/notes', require('./routes/notes'));
 
 // Set up a route for handling GET requests to the root URL ('/')
 // app.get('/', (req, res) => {

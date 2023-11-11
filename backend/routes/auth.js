@@ -4,11 +4,14 @@ const router = express.Router();  // Creating an instance of the Express router
 const User = require('../models/User'); //importing the user model
 const { body, validationResult } = require('express-validator'); // Importing the necessary functions from the express-validator module
 const bcrypt = require('bcryptjs'); // Importing the bcryptjs module for password hashing
-var jwt = require('jsonwebtoken'); // Importing the jsonwebtoken module for creating JSON web tokens
+const jwt = require('jsonwebtoken'); // Importing the jsonwebtoken module for creating JSON web tokens
+const fetchuser = require('../middleware/fetchuser')
 
 const JWT_SECRET = 'equizer$pro'; // Secret key for JWT signing
 
-//Create a User using: POST "/app/auth/createuser" doesn't require Auth (this means that the user doesnt need to be logged in to hit this endpoint btw Auth means authentication over here)
+
+
+// ROUTE 1: Create a User using: POST "/api/auth/createuser" doesn't require Auth (this means that the user doesnt need to be logged in to hit this endpoint btw Auth means authentication over here)
 router.post('/createuser', [
   //validations for the schema
   body('name', 'Name must be atleast 3 characters').isLength({ min: 3 }),
@@ -56,14 +59,14 @@ router.post('/createuser', [
 
 
     // res.json({ message: "User registered!", user: user })
-    
+
     // Return the registered user and the JSON web token in the response
     res.json({ message: "User registered!", authToken })
 
 
   } catch (error) {
     console.log(error.message);
-    res.status(500).send('some error occured')
+    res.status(500).send('Interval Server Error')
   }
   // using try catch above  to  make sure if any mistakes happens or if i make any mistake in the code then i get to know the error 
 
@@ -72,5 +75,55 @@ router.post('/createuser', [
   // res.json({error: 'Enter a unique email - User already exists', message: err.message, solution: 'Try using an email that is not registered'})});
 });
 
+
+
+// ROUTE 2: Authenticate a user at : POST 'api/auth/login' no login required
+router.post('/login', [
+  body('email', 'Enter a valid email').isEmail(),
+  body('password', 'Password cannot be empty').exists()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.Array() });
+  }
+  const { email, password } = req.body;
+  try {
+    let user = await User.findOne({ email: email });
+    if (!user) {
+      res.status(400).json({ error: 'Please login with correct credentials' });
+    }
+
+    const comparePassword = await bcrypt.compare(password, user.password);
+    if (!comparePassword) {
+      return res.status(400).json({ error: 'Please login with correct credentials' });
+    }
+
+    const data = {
+      user: {
+        id: user.id
+      }
+    }
+    const authToken = jwt.sign(data, JWT_SECRET);
+    res.json({ authToken });
+
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Interval Server Error');
+  }
+});
+
+
+// ROUTE 3: Get loggedin user's details : POST 'api/auth/getuser' login required
+router.post('/getuser', fetchuser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select('-password');
+    res.send(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Interval Server Error');
+  }
+});
 
 module.exports = router

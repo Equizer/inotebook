@@ -63,6 +63,19 @@ res.json({ message: "User registered!", authToken });
 
 In this code snippet, the data object contains the user's ID, which is then used as the payload for the JWT. The jwt.sign() function encodes this data and signs it with the JWT_SECRET key, generating a unique JWT. Finally, the code sends a JSON response containing a success message and the JWT back to the client.
 
+
+In the part of the code, the object data is created to store the user's ID. It's structured as an object to allow for the inclusion of other user-related information in the future if needed. The choice of the name "user" here is arbitrary and used as a key to identify the user-related information. It's not necessary to name it "user," but it is a descriptive name for the object's purpose.
+
+The jwt.sign() function is used to generate a JSON Web Token (JWT) that can be sent back to the client. The first parameter in the jwt.sign() function is the payload that you want to include in the token. In this case, the data object contains the user's ID, which is used as the payload. The JWT_SECRET is a secret key or string that is used to sign the token, ensuring its authenticity and integrity.
+
+By signing the data with the JWT_SECRET, you create a token that can be sent back to the client as the authToken. This token can then be used by the client to authenticate and authorize future requests to the server. The token is included in the JSON response along with the message "User registered!" to inform the client that the user has been successfully registered and to provide the authentication token for future use.
+
+
+the code would still work if you directly assigned user.id to the data variable. The purpose of using an object in this context is to provide flexibility for potential future additions to the data being sent as part of the payload.
+
+However, if you only need the user ID for the payload, creating an object might seem unnecessary. Storing user.id directly in the data variable would work fine for this specific case. The key benefit of using an object is that it allows you to easily expand the payload with additional data related to the user if necessary in the future.
+
+
 5. bcrypt.genSalt() bcrypt.hash(): In the provided code snippet, the bcrypt.genSalt() and bcrypt.hash() functions are used to generate a secure password hash for the user's password. Here's an explanation of bcrypt.genSalt() and bcrypt.hash() in simple terms:
 
 What they do:
