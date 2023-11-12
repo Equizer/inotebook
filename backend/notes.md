@@ -111,3 +111,70 @@ Specifically, these functions might be computationally intensive, especially whe
 By using asynchronous functions, the application can maintain its responsiveness and handle multiple user requests simultaneously, which is crucial for creating a robust and efficient web application.
 
 
+7. what does .put() method does and why we use them instead of .post() or .get() what are the difference between .put() and get() post()
+
+The HTTP methods PUT and GET serve different purposes in the context of a RESTful API, and they are used in different scenarios:
+
+GET Method:
+
+Purpose: Retrieve data from the specified resource.
+Idempotent: Yes (Multiple identical requests will have the same effect as a single request).
+Safe: Yes (Does not modify the state of the resource on the server).
+Use Cases: Used for read-only operations where the request does not change the state on the server. For example, fetching user details, retrieving a list of items, etc.
+POST Method:
+
+Purpose: Submit data to be processed to a specified resource.
+Idempotent: No (Subsequent identical requests may have different effects than the initial request).
+Safe: No (May change the state of the resource on the server).
+Use Cases: Used for creating a new resource or performing a non-idempotent operation. For example, creating a new user, submitting a form, etc.
+PUT Method:
+
+Purpose: Update a resource or create it if it does not exist at the specified URI.
+Idempotent: Yes (Multiple identical requests will have the same effect as a single request).
+Safe: No (May change the state of the resource on the server).
+Use Cases: Used for updating an existing resource. It typically requires the client to send the entire updated representation of the resource.
+In summary:
+
+GET: Retrieve data.
+POST: Create a new resource or perform a non-idempotent operation.
+PUT: Update a resource or create it if it doesn't exist.
+When choosing between these methods, consider the nature of the operation you want to perform and adhere to RESTful principles. Use GET for safe, read-only operations, POST for creating resources or performing non-idempotent actions, and PUT for updating resources.
+
+- what is idempotent?: In the context of HTTP methods, "idempotent" refers to the property of an operation where performing the operation multiple times has the same effect as performing it once. In other words, if an operation is idempotent, making the same request multiple times will result in the same state as if it were made only once.
+
+Here's a breakdown:
+
+Idempotent Operation: Regardless of how many times you perform the operation, the final state will be the same as if you had performed it just once.
+
+Non-Idempotent Operation: Performing the operation multiple times may have different effects or result in a different state each time.
+
+In the context of HTTP methods:
+
+GET is Idempotent: Repeated requests for the same resource should return the same result. Retrieving data multiple times doesn't change the state of the server.
+
+PUT is Idempotent: If you send the same PUT request multiple times, it will update the resource to the same state each time.
+
+POST is Not Idempotent: Multiple identical POST requests might result in the creation of different resources or have different effects.
+
+Understanding idempotency is crucial in designing and implementing web APIs, as it helps ensure predictable and safe behavior, especially in scenarios where requests might be retried due to network issues or other factors.
+
+8. what is a set operator: In the context of MongoDB updates, the $set operator is used to specify the values that should be set for the fields in a document. It is part of the update operators in MongoDB and is particularly useful for updating specific fields without affecting the entire document. in simpler words when we use this operator only things that the user is changing will be changed and all other values will not be affected a good example is below: 
+
+When using findByIdAndUpdate without the { $set: newNote } part, the entire document will be replaced with the new object. However, if you include { $set: newNote }, it will only update the fields that are present in newNote, leaving the rest of the document unchanged.
+
+Here's a breakdown:
+
+Without $set:
+
+note = await Note.findByIdAndUpdate(req.params.id, newNote, { new: true });
+If newNote looks like { title: "New Title" }, then after this operation, the existing note will only have a title field, and other fields (if any) will be removed.
+
+With $set:
+
+note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
+If newNote looks like { title: "New Title" }, then after this operation, only the title field of the existing note will be updated. Fields that are not present in newNote will remain unchanged.
+
+
+
+
+
