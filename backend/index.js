@@ -31,5 +31,5 @@ app.use('/api/notes', require('./routes/notes'));
 // Start the Express server and listen on the specified port
 app.listen(port, () => {
   // Log a message to the console indicating that the server is running
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`iNotebook Backend listening at http://localhost:${port}`);
 });

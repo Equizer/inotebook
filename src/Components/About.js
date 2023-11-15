@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React from 'react'
 
 const About = () => {
   return (
     <div>
-      This is {obj.state.name} and he is {obj.state.age} years old
+      This is about page
     </div>
   )
 }
