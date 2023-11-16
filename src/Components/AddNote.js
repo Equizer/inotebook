@@ -7,7 +7,7 @@ const AddNote = () => {
   const { addNote } = useContext(NoteContext);
   const handleClick = (event) => {
    event.preventDefault();
-    addNote(note);
+    addNote(note.title, note.description, note.tag);
   }
   const onChange = (event) => {
     setNote({ ...note, [event.target.name]: event.target.value });
