@@ -7,4 +7,28 @@ let location = useLocation();
     console.log(location);
   }, [location])
 
-  in the above code i am logging the location it logs it with a key in the location object and whenever change the path a new key is logged even though the path is changed and then changed back to it it will have a unique key everytime
+  in the above code i am logging the location it logs it with a key in the location object and whenever change the path a new key is logged even though the path is changed and then changed back to it it will have a unique key everytime one thing that is noticeable is that when it logs in the console on the right side of the console look from which file this is logged and the line number of it
+
+
+
+3. hooks that causes or not causes re-render of the component  
+
+    -useState: Causes re-render when the state changes.
+
+    -useEffect: Doesn't directly cause a re-render but runs after each completed render cycle and can trigger re-renders indirectly.
+
+    -useContext: Causes re-render when the context value changes.
+
+    -useReducer: Causes re-render when the state returned from the reducer function changes.
+
+    -useCallback: Doesn't cause re-render; returns a memoized callback.
+
+    -useMemo: Doesn't cause re-render; returns a memoized value.
+
+    -useRef: Doesn't cause re-render; returns a mutable ref object whose .current property doesn't trigger re-renders.
+
+    -useLayoutEffect: Similar to useEffect, but runs synchronously after all DOM mutations, which might block the browser.
+
+    -useImperativeHandle: Doesn't cause re-render; customizes the instance value that's exposed from a parent component's ref.
+
+    -useDebugValue: Doesn't cause re-render; provides additional debug information for custom hooks.
