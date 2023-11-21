@@ -35,22 +35,8 @@ const NoteState = (props) => {
       body: JSON.stringify(data)
     });
 
-    const json = await response.json();
-    console.log(json);
-
-    //Logic to add a new note in client side
-    const note = {
-      "_id": json._id,
-      "user": "654fe2d174b5e44bb0095615",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": json.date,
-      "__v": 0
-    }
+    const note = await response.json();
     setNotes(notes.concat(note));
-
-    // showAlert('Note added!', 'success');
   }
 
   // Delete a note
@@ -67,14 +53,11 @@ const NoteState = (props) => {
       body: JSON.stringify(data)
     });
 
-    const json = response.json();
+    const json = await response.json();
 
     //Logic to delete a note in client side
     const newNote = notes.filter((note) => { return note._id !== id })
     setNotes(newNote);
-    
-    // showAlert('Note deleted!', 'danger');
-
   }
 
   //Edit a note
@@ -105,10 +88,7 @@ const NoteState = (props) => {
         break;
       }
     }
-    console.log(newNotes);
     setNotes(newNotes);
-
-    // showAlert('Note edited!', 'info');
   }
 
   return (
