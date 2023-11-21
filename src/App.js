@@ -12,6 +12,8 @@ import About from './components/About';
 import NoteState from './context/notes/NoteState'
 import Alert from './components/Alert';
 import { useEffect, useState } from 'react';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
 
@@ -41,6 +43,8 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/About" element={<About showAlert={showAlert}/>} />
+              <Route eact path="/login" element={<Login />} />
+              <Route exact path="signup" element={<Signup />} />
             </Routes>
           </div>
         </Router>
