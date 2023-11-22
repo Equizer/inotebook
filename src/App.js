@@ -54,3 +54,5 @@ function App() {
 }
 
 export default App;
+
+// TODO: after we are done with making this app we will add a feature so that a user can add his age as well when he is signing up and also a feature to delete the account of the user also we can make an endpoint that will delete all the notes by one click

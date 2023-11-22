@@ -19,21 +19,22 @@ router.post('/createuser', [
   body('password', 'Password must be atleast 5 characters').isLength({ min: 5 })
 ], async (req, res) => {
 
-
+  //here we are making a boolean and we make it false whenever there are any errors and we are returning negative status and when the user does everything properly acc to our code then we will make it true . this will help us in the frontend as we send this bool in our response as well so we can decide whether to redirect and give access to the application or give them a error  
+  let success = false;
   //  if there are erros return bad request and the errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() })
+    success = false;
+    return res.status(400).json({ success, errors: errors.array() });
   }
 
 
   try {
-
-
     // check whether a user with this email already exists
     let user = await User.findOne({ email: req.body.email })
     if (user) {
-      return res.status(400).json({ error: "Sorry a user with this email already exists" })
+      success = false;
+      return res.status(400).json({success,  error: "Sorry a user with this email already exists" })
     }
 
     // Generate a salt and hash the user's password
@@ -60,13 +61,16 @@ router.post('/createuser', [
 
     // res.json({ message: "User registered!", user: user })
 
+    success = true;
+
     // Return the registered user and the JSON web token in the response
-    res.json({ message: "User registered!", authToken })
+    res.json({success, message: "User registered!", authToken })
 
 
   } catch (error) {
+    success = false;
     console.log(error.message);
-    res.status(500).send('Interval Server Error')
+    res.status(500).json({success, error: 'Interval Server Error'})
   }
   // using try catch above  to  make sure if any mistakes happens or if i make any mistake in the code then i get to know the error 
 
@@ -82,7 +86,11 @@ router.post('/login', [
   body('email', 'Enter a valid email').isEmail(),
   body('password', 'Password cannot be empty').exists()
 ], async (req, res) => {
+
+   //here we are making a boolean and we make it false whenever there are any errors and we are returning negative status and when the user does everything properly acc to our code then we will make it true . this will help us in the frontend as we send this bool in our response as well so we can decide whether to redirect and give access to the application or give them a error  
   let success = false;
+
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success, errors: errors.array() });
@@ -114,7 +122,7 @@ router.post('/login', [
   } catch (error) {
     success = false;
     console.log(error.message);
-    res.status(500).send('Interval Server Error');
+    res.status(500).json({success, error :'Interval Server Error'});
   }
 });
 
