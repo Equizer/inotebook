@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom' //note that useHistory hook has been replaced with useNavigate hook after version 6 of react-touter-dom and now we dont need to use .() to use this hook we can just do it like that navigate(path) if we stored the hook in the variable named navigate
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const hadleSubmit = async (event) => {
@@ -19,9 +19,10 @@ const Login = () => {
       //save the auth token and redirect
       localStorage.setItem('token', json.authToken);
       navigate('/');
+      props.showAlert('Logged In!', 'success');
     }
     else {
-      alert("Invalid email or password");
+      props.showAlert('Invalid email or password', 'danger');      
     }
   }
 

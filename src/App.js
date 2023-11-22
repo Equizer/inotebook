@@ -28,11 +28,8 @@ function App() {
 
     setTimeout(() => {
       setAlert(null);
-    }, 2000);
+    }, 1500);
   }
-  useEffect(() => {
-    showAlert('This string was passed by a function', 'primary');
-  }, []);
   return (
     <>
       <NoteState>
@@ -41,10 +38,10 @@ function App() {
           <Alert alert={alert} />
           <div className="container">
             <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route exact path="/About" element={<About showAlert={showAlert}/>} />
-              <Route eact path="/login" element={<Login />} />
-              <Route exact path="signup" element={<Signup />} />
+              <Route exact path="/" element={<Home showAlert={showAlert} />} />
+              <Route exact path="/About" element={<About />} />
+              <Route eact path="/login" element={<Login showAlert={showAlert}/>} />
+              <Route exact path="signup" element={<Signup showAlert={showAlert}/>} />
             </Routes>
           </div>
         </Router>

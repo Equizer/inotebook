@@ -17,7 +17,7 @@ const NoteItem = (props) => {
           <div className="d-flex justify-content-between">
             <div className="card-text" style={{ fontSize: "12px" }}>{new Date(note.date).toGMTString()}</div>
             <div>
-              <i className="fa-solid fa-trash mx-2" onClick={() => { deleteNote(note._id, note.title, note.description, note.tag) }}></i>
+              <i className="fa-solid fa-trash mx-2" onClick={() => { deleteNote(note._id, note.title, note.description, note.tag); props.showAlert('Note deleted!', 'warning') }}></i>
               <i className="fa-solid fa-pen-to-square mx-2" onClick={() => { updateNote(note) }}></i>
             </div>
 
