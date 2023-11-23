@@ -4,7 +4,7 @@ import UserContext from '../context/user/userContext'
 
 const Signup = (props) => {
 
-  const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" });
+  const [credentials, setCredentials] = useState({ name: "",bod: "", email: "", password: "", cpassword: "" });
   const navigate = useNavigate();
   const context = useContext(UserContext);
   const { getUserData } = context;
@@ -19,16 +19,17 @@ const Signup = (props) => {
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password })
+      body: JSON.stringify({ name: credentials.name,dob: credentials.dob, email: credentials.email, password: credentials.password })
     });
-    
+
     const json = await response.json();
 
     if (json.success) {
       localStorage.setItem('token', json.authToken);
       getUserData();
       navigate('/');
-      props.showAlert('Signed up!', 'success')
+      props.showAlert('Signed up!', 'success');
+      console.log(json);
     }
     else {
       props.showAlert('A user with this email already exists', 'danger');
@@ -46,6 +47,10 @@ const Signup = (props) => {
           <input type="text" className="form-control" id="name" name="name" value={credentials.name} aria-describedby="emailHelp" onChange={onChange} required minLength={2} />
         </div>
         <div className="mb-3">
+          <label htmlFor="dob" className="form-label">Date of birth</label>
+          <input type="date" className="form-control" id="dob" name="dob" value={credentials.dob} aria-describedby="emailHelp" onChange={onChange} required />
+        </div>
+        <div className="mb-3">
           <label htmlFor="email" className="form-label">Email address</label>
           <input type="email" className="form-control" id="email" name="email" value={credentials.email} aria-describedby="emailHelp" onChange={onChange} required />
           <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
@@ -58,7 +63,7 @@ const Signup = (props) => {
           <label htmlFor="cpassword" className="form-label"> Confirm Password</label>
           <input type="password" className="form-control" id="cpassword" name="cpassword" value={credentials.cpassword} onChange={onChange} required minLength={5} />
         </div>
-        <button disabled={credentials.name.length < 2 || credentials.password.length < 5 || credentials.cpassword.length < 5} type="submit" className="btn btn-primary">Signup</button>
+        <button disabled={credentials.name.length < 2 || !credentials.dob || credentials.password.length < 5 || credentials.cpassword.length < 5 } type="submit" className="btn btn-primary">Signup</button>
       </form>
     </div>
   )

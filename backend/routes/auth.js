@@ -15,6 +15,7 @@ const JWT_SECRET = 'equizer$pro'; // Secret key for JWT signing
 router.post('/createuser', [
   //validations for the schema
   body('name', 'Name must be atleast 3 characters').isLength({ min: 3 }),
+  body('dob', 'Enter your date of birth'),
   body('email', 'Enter a valid email').isEmail(),
   body('password', 'Password must be atleast 5 characters').isLength({ min: 5 })
 ], async (req, res) => {
@@ -44,6 +45,7 @@ router.post('/createuser', [
     // Create a new user in the database [for more details about the .create() function refer the notes.md file]
     user = await User.create({
       name: req.body.name,
+      dob: req.body.dob,
       email: req.body.email,
       //notice how we are saving the secured password in our database which is hashed using bcryptjs
       password: securedPassword

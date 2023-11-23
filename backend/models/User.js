@@ -9,6 +9,10 @@ const UserSchema = {
     type: String,
     required: true,
   },
+  dob: {
+    type: Date,
+    required: true,
+  },
   email: { // Define the 'email' field as a String type that is required and must be unique for all documents
     type: String,
     required: true,
