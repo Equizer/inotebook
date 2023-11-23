@@ -2,15 +2,22 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import NoteContext from '../context/notes/noteContext';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem'
+import { useNavigate } from 'react-router-dom'
 
 const Notes = (props) => {
 
   const context = useContext(NoteContext);
   const { notes, getAllNotes, editNote } = context;
+  const navigate = useNavigate();
 
   // useEffect can be used as a replacement for componentDidMount
   useEffect(() => {
+    if (localStorage.getItem('token')) {
     getAllNotes();
+    }
+    else {
+      navigate('/login');
+    }
   }, [])
   const ref = useRef(null);
   const refClose = useRef(null);

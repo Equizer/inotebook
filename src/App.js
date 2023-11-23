@@ -16,7 +16,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 
 function App() {
-
+  
   const [alert, setAlert] = useState(null);
 
   const showAlert = (message, type) => {
@@ -40,8 +40,8 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Home showAlert={showAlert} />} />
               <Route exact path="/About" element={<About />} />
-              <Route eact path="/login" element={<Login showAlert={showAlert}/>} />
-              <Route exact path="signup" element={<Signup showAlert={showAlert}/>} />
+              <Route eact path="/login" element={<Login showAlert={showAlert} />} />
+              <Route exact path="signup" element={<Signup showAlert={showAlert} />} />
             </Routes>
           </div>
         </Router>

@@ -9,14 +9,19 @@ const { body, validationResult } = require('express-validator'); // Importing th
 
 // ROUTE 1: Get All the Notes: GET 'api/notes/fetchallnotes Login required
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
+
   try {
+
     const notes = await Note.find({ user: req.user.id });
     res.send(notes);
+
   } catch (error) {
+
     console.log(error.message);
     res.status(500).send('Interval Server Error');
-  }
 
+  }
+  
 });
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
