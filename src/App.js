@@ -1,15 +1,14 @@
 import './App.css';
 import {
   BrowserRouter as Router,
-  Switch,
   Routes,
   Route,
-  Link
 } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import NoteState from './context/notes/NoteState'
+import UserState from './context/user/UserState';
 import Alert from './components/Alert';
 import { useEffect, useState } from 'react';
 import Login from './components/Login';
@@ -32,6 +31,7 @@ function App() {
   }
   return (
     <>
+    <UserState>
       <NoteState>
         <Router>
           <Navbar />
@@ -46,6 +46,7 @@ function App() {
           </div>
         </Router>
       </NoteState>
+      </UserState>
     </>
   );
 }

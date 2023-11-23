@@ -1,12 +1,11 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom' //note that useHistory hook has been replaced with useNavigate hook after version 6 of react-touter-dom and now we dont need to use .() to use this hook we can just do it like that navigate(path) if we stored the hook in the variable named navigate
-import NoteContext from '../context/notes/noteContext';
-
+import UserContext from '../context/user/userContext';
 const Login = (props) => {
 
-  const context = useContext(NoteContext);
+  const context = useContext(UserContext);
 
-  const {getUserData} = context;
+  const { getUserData } = context;
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();

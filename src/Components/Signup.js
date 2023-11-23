@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import NoteContext from '../context/notes/noteContext';
+import UserContext from '../context/user/userContext'
 
 const Signup = (props) => {
 
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" });
   const navigate = useNavigate();
-  const context = useContext(NoteContext);
+  const context = useContext(UserContext);
   const { getUserData } = context;
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
