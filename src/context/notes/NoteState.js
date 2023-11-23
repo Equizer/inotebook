@@ -7,7 +7,7 @@ const NoteState = (props) => {
   const host = "http://localhost:5000";
   const notesInitial = [];
   const [notes, setNotes] = useState(notesInitial);
-  const autTokenLocalStorage = localStorage.getItem('token');
+  const [user, setUser] = useState({});
 
   const getAllNotes = async () => {
     //API CALL
@@ -15,7 +15,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "content-type": "applciation/json",
-        "auth-token": autTokenLocalStorage
+        "auth-token": localStorage.getItem('token')
       }
     });
     const json = await response.json();
@@ -30,7 +30,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "auth-token": autTokenLocalStorage
+        "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify(data)
     });
@@ -48,7 +48,7 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         "content-type": "application/json",
-        "auth-token": autTokenLocalStorage
+        "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify(data)
     });
@@ -70,7 +70,7 @@ const NoteState = (props) => {
 
       headers: {
         "Content-Type": "application/json",
-        "auth-token": autTokenLocalStorage
+        "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
@@ -91,8 +91,21 @@ const NoteState = (props) => {
     setNotes(newNotes);
   }
 
+  // Get user data
+  const getUserData = async () => {
+    const response = await fetch(`${host}/api/auth/getuser`, {
+      method: 'GET',
+      headers: {
+        "auth-token": localStorage.getItem('token')
+      }
+    });
+    const json = await response.json();
+    setUser(json);
+    localStorage.setItem('user', JSON.stringify(json));
+  }
+
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getAllNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getAllNotes, getUserData, user, setUser }}>
       {props.children}
     </NoteContext.Provider>
   )

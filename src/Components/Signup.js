@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import NoteContext from '../context/notes/noteContext';
 
 const Signup = (props) => {
 
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" });
   const navigate = useNavigate();
+  const context = useContext(NoteContext);
+  const { getUserData } = context;
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   }
@@ -18,10 +21,12 @@ const Signup = (props) => {
       },
       body: JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password })
     });
+    
     const json = await response.json();
-    console.log(json);
+
     if (json.success) {
       localStorage.setItem('token', json.authToken);
+      getUserData();
       navigate('/');
       props.showAlert('Signed up!', 'success')
     }
@@ -30,9 +35,6 @@ const Signup = (props) => {
       navigate('/login');
     }
   }
-
-
-
 
 
   return (

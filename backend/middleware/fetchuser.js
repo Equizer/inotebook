@@ -24,7 +24,7 @@ const fetchuser = (req, res, next) => {
     next();
 
   } catch (error) {
-    res.status(401).json({ error: 'Please enter a valid token' });
+    res.status(401).json({ error: 'Please enter a valid token1' });
   }
 }
 module.exports = fetchuser;
