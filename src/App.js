@@ -53,4 +53,4 @@ function App() {
 
 export default App;
 
-// TODO: after we are done with making this app we will add a feature so that a user can add his age as well when he is signing up and also a feature to delete the account of the user also we can make an endpoint that will delete all the notes by one click
+// TODO:  an endpoint to delete the account of the user also we can make an endpoint that will delete all the notes by one click, see if we can implement infinite scroll in the app like when the user has many notes we shouldnt display all of them at once but when the user reaches at the bottom then load more notes and when we fetch more then display a loading bar at the top

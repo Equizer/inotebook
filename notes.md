@@ -32,3 +32,32 @@ let location = useLocation();
     -useImperativeHandle: Doesn't cause re-render; customizes the instance value that's exposed from a parent component's ref.
 
     -useDebugValue: Doesn't cause re-render; provides additional debug information for custom hooks.
+
+    4. Problem: here when i try to send in headers the auth token after storing it in a variable called localStorageAuthToken  this doesnt work properly but if i manually send localStorage.getItem('token') in the headers then it works properly why?
+
+      Reason for the problem: The issue you're facing might be related to the point in time when localStorageAuthToken is fetched. Remember that the localStorage value is retrieved when the component is first rendered, and if there's a change in the stored token value after that point, it won't reflect in the localStorageAuthToken variable.
+
+      If the value of localStorage.getItem('token') is changed or set after the component has initially rendered and stored it in the localStorageAuthToken variable, then the stored value in localStorageAuthToken will not be updated automatically.
+
+      To resolve this, you might consider fetching the token value directly from localStorage.getItem('token') within your getUserData function every time you make a request, ensuring it's getting the most up-to-date token value.
+
+      By directly fetching the token value inside the getUserData function, you'll ensure you're using the most current token value each time you make a request. This way, any changes to the token in localStorage will be reflected in the requests.
+
+      Code snippet: 
+        const getUserData = async () => {
+        const localStorageAuthToken = localStorage.getItem('token');
+        const response = await fetch(`${host}/api/auth/getuser`, {
+          method: 'GET',
+          headers: {
+            "auth-token": localStorageAuthToken
+          }
+          }); 
+        const json = await response.json();
+        setUser(json);
+        localStorage.setItem('user', JSON.stringify(json));
+        console.log(json);
+      }
+
+      SUMMARY: *NOTICE that here we are sending localStorageAuthToken in the headers as "auth-token" we should directly send localStorage.getItem('token') in the headers as "auth-token" instead*
+
+
