@@ -3,17 +3,24 @@ import NoteContext from '../context/notes/noteContext';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem'
 import { useNavigate } from 'react-router-dom'
+import LoadingPlaceholder from './LoadingPlaceholder';
 
 const Notes = (props) => {
 
   const context = useContext(NoteContext);
   const { notes, getAllNotes, editNote } = context;
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   // useEffect can be used as a replacement for componentDidMount
   useEffect(() => {
     if (localStorage.getItem('token')) {
-    getAllNotes();
+      //using timeout to give user  loading experience we will show the loading card and then we will show them their notes if any
+      setTimeout(() => {
+        getAllNotes();
+        setLoading(false);
+      }, 1000)
+
     }
     else {
       navigate('/login');
@@ -39,7 +46,7 @@ const Notes = (props) => {
 
   return (
     <>
-      <AddNote showAlert={props.showAlert}/>
+      <AddNote showAlert={props.showAlert} />
       <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Launch demo modal
       </button>
@@ -55,11 +62,11 @@ const Notes = (props) => {
               <form className="my-3">
                 <div className="mb-3">
                   <label htmlFor="title" className="form-label">Title:</label>
-                  <input type="text" className="form-control" value={note.etitle} id="etitle" name="etitle" aria-describedby="emailHelp" onChange={onChange} placeholder="Enter a Title..." required minLength={3}/>
+                  <input type="text" className="form-control" value={note.etitle} id="etitle" name="etitle" aria-describedby="emailHelp" onChange={onChange} placeholder="Enter a Title..." required minLength={3} />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="description" className="form-label" >Description:</label>
-                  <input type="text" className="form-control" value={note.edescription} id="edescription" name="edescription" onChange={onChange} placeholder="Enter a Description..." required minLength={5}/>
+                  <input type="text" className="form-control" value={note.edescription} id="edescription" name="edescription" onChange={onChange} placeholder="Enter a Description..." required minLength={5} />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="tag" className="form-label">Tag:</label>
@@ -76,13 +83,14 @@ const Notes = (props) => {
       </div>
       <div className="row my-3">
         <h1>Your Notes</h1>
-        <div className="container text-center">{notes.length === 0 && 'No notes to display'}</div>
+        <div className="container text-center">{notes.length === 0 && !loading && 'No notes to display'}</div>
 
-        {notes.map((note) => {
-          return (
-            <NoteItem note={note} key={note._id} updateNote={updateNote} showAlert={props.showAlert}/>
-          )
-        })}
+        {
+          loading ? <LoadingPlaceholder /> : notes.map((note) => {
+            return (
+              <NoteItem note={note} key={note._id} updateNote={updateNote} showAlert={props.showAlert} />
+            )
+          })}
       </div>
     </>
   )

@@ -10,9 +10,10 @@ import About from './components/About';
 import NoteState from './context/notes/NoteState'
 import UserState from './context/user/UserState';
 import Alert from './components/Alert';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Login from './components/Login';
 import Signup from './components/Signup';
+
 
 function App() {
   
@@ -27,14 +28,14 @@ function App() {
 
     setTimeout(() => {
       setAlert(null);
-    }, 1500);
+    }, 2000);
   }
   return (
     <>
     <UserState>
       <NoteState>
         <Router>
-          <Navbar />
+          <Navbar showAlert={showAlert}/>
           <Alert alert={alert} />
           <div className="container">
             <Routes>
@@ -53,4 +54,4 @@ function App() {
 
 export default App;
 
-// TODO:  an endpoint to delete the account of the user also we can make an endpoint that will delete all the notes by one click, see if we can implement infinite scroll in the app like when the user has many notes we shouldnt display all of them at once but when the user reaches at the bottom then load more notes and when we fetch more then display a loading bar at the top
+// TODO:  see if we can implement infinite scroll in the app like when the user has many notes we shouldnt display all of them at once but when the user reaches at the bottom then load more notes and when we fetch more then display a loading bar at the top

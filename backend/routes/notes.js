@@ -21,7 +21,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
     res.status(500).send('Interval Server Error');
 
   }
-  
+
 });
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -69,7 +69,9 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
     //  store the values in the new object only if the user puts something there 
     if (title) { newNote.title = title };
     if (description) { newNote.description = description };
-    if (tag) { newNote.tag = tag };
+
+    // here if the tag is empty or is not empty we will store it in the newNote here we did this becuz if the user wants to remove the tag then he can go to edit and just remove it as tag is not required in the note we can not do this in the title and description as they are required that means that there is supposed to be something in the title and description, the problem here was that if the user tries to remove the tag by editing it wouldnt edit in the backend as here we were previously checking and storing the tag in the newNote only if there is something in the tag but now we are doing it in both cases if it is null or not null.  
+    if (tag || !tag) { newNote.tag = tag };
 
     //  here we take a parameter in the http link then find that id in our mongodb database 
     let note = await Note.findById(req.params.id);
@@ -120,5 +122,28 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
 });
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// ROUTE 5: Delete all the user notes : DELETE 'api/notes/deleteallnotes' login required
+
+router.delete('/deleteallnotes/:userId', fetchuser, async (req, res) => {
+  let success = false;
+  try {
+    let deleteNoteUserId = await Note.findOne({ user: req.params.userId });
+
+    if (!deleteNoteUserId) {
+      return res.status(400).json({ success: success, message: "You don't have any notes to delete" });
+    }
+    if (deleteNoteUserId.user.toString() !== req.params.userId) {
+      return res.status(401).json({ success: success, message: "Not allowed" });
+    }
+    deleteNoteUserId = await Note.deleteMany({ user: req.params.userId });
+    success = true;
+    return res.json({ success: success, message: "All notes deleted", info: deleteNoteUserId });
+
+  } catch (error) {
+    console.log(error.message);
+    return res.status(400).json({ success: success, error: error });
+  }
+
+});
 
 module.exports = router

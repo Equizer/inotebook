@@ -8,6 +8,7 @@ const NoteState = (props) => {
   const notesInitial = [];
   const [notes, setNotes] = useState(notesInitial);
 
+  // Fetch all notes
   const getAllNotes = async () => {
     //API CALL
     const response = await fetch(`${host}/api/notes/fetchallnotes`, {
@@ -90,10 +91,19 @@ const NoteState = (props) => {
     setNotes(newNotes);
   }
 
-
+  const deleteAllNotes = async (userId) => {
+    const response = await fetch(`${host}/api/notes/deleteallnotes/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "auth-token": localStorage.getItem('token')
+      }
+    });
+    const json = await response.json();
+    setNotes([]);
+  }
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getAllNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getAllNotes, deleteAllNotes }}>
       {props.children}
     </NoteContext.Provider>
   )

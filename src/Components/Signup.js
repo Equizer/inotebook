@@ -4,7 +4,7 @@ import UserContext from '../context/user/userContext'
 
 const Signup = (props) => {
 
-  const [credentials, setCredentials] = useState({ name: "",bod: "", email: "", password: "", cpassword: "" });
+  const [credentials, setCredentials] = useState({ name: "",dob: "", email: "", password: "", cpassword: "" });
   const navigate = useNavigate();
   const context = useContext(UserContext);
   const { getUserData } = context;
@@ -29,7 +29,6 @@ const Signup = (props) => {
       getUserData();
       navigate('/');
       props.showAlert('Signed up!', 'success');
-      console.log(json);
     }
     else {
       props.showAlert('A user with this email already exists', 'danger');

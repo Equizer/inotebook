@@ -35,7 +35,7 @@ router.post('/createuser', [
     let user = await User.findOne({ email: req.body.email })
     if (user) {
       success = false;
-      return res.status(400).json({success,  error: "Sorry a user with this email already exists" })
+      return res.status(400).json({ success, error: "Sorry a user with this email already exists" })
     }
 
     // Generate a salt and hash the user's password
@@ -60,19 +60,16 @@ router.post('/createuser', [
 
     const authToken = jwt.sign(data, JWT_SECRET);
 
-
-    // res.json({ message: "User registered!", user: user })
-
     success = true;
 
     // Return the registered user and the JSON web token in the response
-    res.json({success, message: "User registered!", authToken })
+   return res.json({ success, message: "User registered!", authToken });
 
 
   } catch (error) {
     success = false;
     console.log(error.message);
-    res.status(500).json({success, error: 'Interval Server Error'})
+    res.status(500).json({ success, error: 'Interval Server Error' });
   }
   // using try catch above  to  make sure if any mistakes happens or if i make any mistake in the code then i get to know the error 
 
@@ -89,7 +86,7 @@ router.post('/login', [
   body('password', 'Password cannot be empty').exists()
 ], async (req, res) => {
 
-   //here we are making a boolean and we make it false whenever there are any errors and we are returning negative status and when the user does everything properly acc to our code then we will make it true . this will help us in the frontend as we send this bool in our response as well so we can decide whether to redirect and give access to the application or give them a error  
+  //here we are making a boolean and we make it false whenever there are any errors and we are returning negative status and when the user does everything properly acc to our code then we will make it true . this will help us in the frontend as we send this bool in our response as well so we can decide whether to redirect and give access to the application or give them a error  
   let success = false;
 
 
@@ -102,7 +99,7 @@ router.post('/login', [
     let user = await User.findOne({ email: email });
     if (!user) {
       success = false;
-      return res.status(400).json({ success, error: 'Please login with correct credentials' });
+      return res.status(400).json({ success, error: 'User not found!' });
     }
 
     const comparePassword = await bcrypt.compare(password, user.password);
@@ -118,26 +115,54 @@ router.post('/login', [
     }
     const authToken = jwt.sign(data, JWT_SECRET);
     success = true;
-    res.json({ success, authToken });
-
-
+    return res.json({ success, authToken });
   } catch (error) {
     success = false;
     console.log(error.message);
-    res.status(500).json({success, error :'Interval Server Error'});
+    return res.status(500).json({ success, error: 'Interval Server Error' });
   }
 });
 
 
 // ROUTE 3: Get loggedin user's details : GET 'api/auth/getuser' login required
 router.get('/getuser', fetchuser, async (req, res) => {
+
+  let success = false;
+
   try {
     const userId = req.user.id;
     const user = await User.findById(userId).select('-password');
-    res.send(user);
+    success = true;
+    return res.send(user);
   } catch (error) {
+    success = false;
     console.log(error.message);
-    res.status(500).send('Interval Server Error');
+    res.status(500).json({ success: success, error: "Interval Server Error" });
+  }
+});
+
+//ROUTE 4: Delete a user : DELETE 'api/auth/deleteuser' login required
+
+router.delete('/deleteuser/:id', fetchuser, async (req, res) => {
+  let success = false;
+  try {
+    let userToDelete = await User.findById(req.params.id);
+
+    if (!userToDelete || userToDelete === null || userToDelete === undefined) {
+      return res.status(400).json({ success: success, message: "User not found" });
+    }
+
+    if (userToDelete._id.toString() !== req.params.id) { return status(401).json({ success: success, error: "Not allowed!" }) }
+
+    userToDelete = await User.findByIdAndDelete(req.params.id);
+    success = true;
+
+    return res.json({ success: success, message: "User Deleted Successfuly!", deletedUser: userToDelete });
+
+  } catch(error) {
+    success = false;
+    console.log(error.message)
+    return res.status(401).json({ success: success, error: "Interval Server Error!" });
   }
 });
 

@@ -4,7 +4,7 @@ const connectToMongo = require('./db');
 // Require the 'express' module, which is a popular Node.js framework for building web applications
 const express = require('express');
 
-// we cannot make request from our frontend local host to beackend endpoint in local host as it shows an error that says: "Access to fetch at 'http://localhost:5000/api/notes/addnote' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled." 
+// we cannot make request from our frontend local host to backend endpoint in local host as it shows an error that says: "Access to fetch at 'http://localhost:5000/api/notes/addnote' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled." 
 const  cors = require('cors')
 
 
@@ -21,7 +21,9 @@ const port = 5000;
 app.use(cors());
 
 
-//we included this so that we can console.log(req.body) in the auth.js we also had to add a header in the thunder client which had content-type application/json and added a object that has name in the body in the thunder client this is called a middleware   
+//we included this so that we can console.log(req.body) in the auth.js we also had to add a header in the thunder client which had content-type application/json and added a object that has name in the body in the thunder client this is called a middleware 
+// Middleware to parse incoming requests with JSON payloads
+// It makes the request body available under req.body  
 app.use(express.json());
 
 

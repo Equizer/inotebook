@@ -41,3 +41,9 @@
 i {
   cursor: pointer
 }
+
+.modal.vertically-center .modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3.5rem); /* Adjust this value to fit your needs */
+}

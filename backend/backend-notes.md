@@ -175,6 +175,32 @@ note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: tru
 If newNote looks like { title: "New Title" }, then after this operation, only the title field of the existing note will be updated. Fields that are not present in newNote will remain unchanged.
 
 
+9. Mongoose Imp notes: 
+
+    In Mongoose, when using Note.findOne(req.params.id), the findOne method is typically used to search for documents by a specific field rather than directly by the document's _id field.
+
+    For _id based queries in Mongoose, it's more common to use Note.findById(req.params.id). This method specifically searches for documents by their unique _id field in the MongoDB database.
+
+    If you want to search for a document by a field other than _id, such as a custom userId or another attribute, you'd use findOne with the respective field:
+
+    // Example: Searching for a note by userId
+      const note = await Note.findOne({ userId: req.params.id });
+    This would search for a note where the userId matches the value passed in req.params.id.
+
+
+
+10. .findById() : 
+The .findById() method in Mongoose is used to find a single document by its _id field. It doesn't return the _id of the query itself; rather, it returns the document matching the provided _id.
+
+11. .findByIdAndDelete() : 
+The .findByIdAndDelete() function is a method used in Mongoose, a MongoDB ODM (Object Data Modeling) library for Node.js. It's specifically designed to find a single document by its _id field and remove it from the database.
+
+The .findByIdAndDelete() function takes the following parameters:
+
+id: This is the value of the _id field by which the document is to be found and deleted.
+options: An optional parameter that allows specifying additional options for the operation, such as query conditions or additional settings. These options are typically used to modify the behavior of the deletion operation.
+
+
 
 
 
